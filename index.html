@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #e6e9ff;
+            --success: #4cc9f0;
+            --error: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            transition: var(--transition);
+        }
+
+        h1 {
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 24px;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            transition: var(--transition);
+            background-color: #f9f9f9;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .switch-text {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .switch {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .switch:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 14px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: #1a936f;
+            border-left: 3px solid #1a936f;
+            display: block;
+        }
+
+        .error {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--error);
+            border-left: 3px solid var(--error);
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h1 id="form-title">Login</h1>
+        
+        <!-- Login Form -->
+        <div id="login-form" class="form-container">
+            <div class="form-group">
+                <input type="text" id="login-rollno" placeholder="Roll Number/ Name" required>
+            </div>
+            <div class="form-group password-container">
+                <input type="password" id="login-password" placeholder="Password" required>
+                <span class="password-toggle" id="login-toggle">👁️</span>
+            </div>
+            <button id="login-btn">Login</button>
+            <div class="switch-text">
+                Don't have an account? <span class="switch" id="show-register">Register</span>
+            </div>
+        </div>
+        
+        <!-- Registration Form -->
+        <div id="register-form" class="form-container hidden">
+            <div class="form-group">
+                <input type="text" id="register-rollno" placeholder="Roll Number" required>
+            </div>
+            <div class="form-group password-container">
+                <input type="password" id="register-password" placeholder="Password" required>
+                <span class="password-toggle" id="register-toggle">👁️</span>
+            </div>
+            <div class="form-group password-container">
+                <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+                <span class="password-toggle" id="confirm-toggle">👁️</span>
+            </div>
+            <button id="register-btn">Register</button>
+            <div class="switch-text">
+                Already have an account? <span class="switch" id="show-login">Login</span>
+            </div>
+        </div>
+        
+        <!-- Message Display -->
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegister = document.getElementById('show-register');
+        const showLogin = document.getElementById('show-login');
+        const formTitle = document.getElementById('form-title');
+        const messageDiv = document.getElementById('message');
+
+        // Password toggle functionality
+        function setupPasswordToggle(toggleId, inputId) {
+            const toggle = document.getElementById(toggleId);
+            const input = document.getElementById(inputId);
+            
+            toggle.addEventListener('click', () => {
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                toggle.textContent = isPassword ? '👁️‍🗨️' : '👁️';
+            });
+        }
+        
+        setupPasswordToggle('login-toggle', 'login-password');
+        setupPasswordToggle('register-toggle', 'register-password');
+        setupPasswordToggle('confirm-toggle', 'register-confirm-password');
+
+        // Toggle between forms
+        showRegister.addEventListener('click', () => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            formTitle.textContent = 'Register';
+        });
+
+        showLogin.addEventListener('click', () => {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            formTitle.textContent = 'Login';
+        });
+
+        // Handle login
+        document.getElementById('login-btn').addEventListener('click', async () => {
+            const rollno = document.getElementById('login-rollno').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!rollno || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'login', rollno, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Login successful! Redirecting...', 'success');
+                    // Redirect to dashboard or another page
+                    setTimeout(() => { window.location.href = 'dashboard.php'; }, 1000);
+                } else {
+                    showMessage(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'error');
+                console.error(error);
+            }
+        });
+
+        // Handle registration
+        document.getElementById('register-btn').addEventListener('click', async () => {
+            const rollno = document.getElementById('register-rollno').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (!rollno || !password || !confirmPassword) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'register', rollno, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Registration successful! You can now login.', 'success');
+                    // Switch back to login form
+                    registerForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+                    formTitle.textContent = 'Login';
+                } else {
+                    showMessage(data.message || 'Registration failed', 'error');
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'error');
+                console.error(error);
+            }
+        });
+
+        // Helper function to show messages
+        function showMessage(message, type) {
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

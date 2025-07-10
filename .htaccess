@@ -1,0 +1,10 @@
+# Enable PHP file uploads
+php_flag file_uploads On
+php_value upload_max_filesize 10M
+php_value post_max_size 12M
+
+# Prevent directory listing
+Options -Indexes
+
+# Redirect errors to a generic page (optional)
+ErrorDocument 404 /404.html
