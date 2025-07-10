@@ -42,17 +42,17 @@ Prompt engineering techniques were used to generate:
 
 ## 📁 Folder Structure
 
-Certificate-Saver/
-│
-├── index.html # Landing + Auth Page
-├── auth.php # Login/Register Logic
-├── dashboard.php # User Dashboard
-├── admin.php # Admin Login Logic
-├── admin_view.php # Admin Certificate Panel
-├── upload.php # Upload Certificates
-├── view.php # View Certificates
-├── delete_certificate.php # Delete Functionality
-├── logout.php # Logout Logic
+Certificate-Saver/<br>
+│<br>
+├── index.html # Landing + Auth Page<br>
+├── auth.php # Login/Register Logic<br>
+├── dashboard.php # User Dashboard<br>
+├── admin.php # Admin Login Logic<br>
+├── admin_view.php # Admin Certificate Panel<br>
+├── upload.php # Upload Certificates<br>
+├── view.php # View Certificates<br>
+├── delete_certificate.php # Delete Functionality<br>
+├── logout.php # Logout Logic<br>
 
 ---
 
